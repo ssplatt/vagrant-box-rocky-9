@@ -1,0 +1,43 @@
+name: Vagrant Vmware box publish
+
+on:
+  push:
+  schedule:
+    - cron: "1 1 * * 1"
+
+jobs:
+  box_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: check amount of ram
+        run: |
+          sudo lsmem
+          sudo lscpu
+      - name: Setup HashiCorp Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: latest
+      - name: Setup HashiCorp Vagrant
+        run: |
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update
+          sudo apt install -y vagrant packer
+      - name: Setup Vmware
+        run: |
+          make setup-vmware
+      - name: Build box artifact
+        run: |
+          export PACKER_LOG=1
+          make build-vmware
+      - name: Upload build artifact
+        env:
+          VAGRANT_TOKEN: ${{ secrets.VAGRANT_TOKEN }}
+        if: github.ref  == 'refs/heads/main'
+        run: |
+          export VERSION="$(date +%Y%m%d).${{github.run_number}}.${{github.run_attempt}}"
+          export PROVIDER="vmware_desktop"
+          export BOX_PATH="./centos9stream.box"
+          make upload
