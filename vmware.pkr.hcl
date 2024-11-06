@@ -7,9 +7,9 @@ packer {
   }
 }
 
-variable "vmx_path" { 
+variable "vmx_path" {
   type = string
-  default = "/home/runner/.vagrant.d/boxes/bento-VAGRANTSLASH-centos-stream-9/202407.23.0/vmware_desktop/centos-stream-9-amd64.vmx"
+  default = "/home/runner/.vagrant.d/boxes/ssplatt-VAGRANTSLASH-rocky-9/0.0.1/vmware_desktop/rocky9.vmx"
 }
 
 source "vmware-vmx" "box" {
