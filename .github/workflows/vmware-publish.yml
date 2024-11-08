@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-      - name: check amount of ram
-        run: |
-          sudo lsmem
-          sudo lscpu
       - name: Setup HashiCorp Packer
         uses: hashicorp/setup-packer@main
         with:
@@ -30,7 +26,6 @@ jobs:
           make setup-vmware
       - name: Build box artifact
         run: |
-          export PACKER_LOG=1
           make build-vmware
       - name: Upload build artifact
         env:
