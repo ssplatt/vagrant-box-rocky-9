@@ -16,9 +16,9 @@ if [[ "$USE_VAGRANT" == "true" ]]; then
         ./vagrant-vmware.pkr.hcl
 else
     if [[ ! -d "$HOME/.vagrant.d/boxes/ssplatt-VAGRANTSLASH-centos-stream-9" ]]; then
-        vagrant box add ssplatt/centos-stream-9 --no-tty --provider vmware_desktop
+        vagrant box add ssplatt/rocky9 --no-tty --provider vmware_desktop
     else
-        vagrant box update --box ssplatt/centos-stream-9 --provider vmware_desktop
+        vagrant box update --box ssplatt/rocky9 --provider vmware_desktop
     fi
     vmx_file=$(find "$HOME/.vagrant.d/boxes/" -type f -name "*.vmx")
     packer init -var "vmx_path=$vmx_file" ./vmware.pkr.hcl
@@ -46,5 +46,5 @@ else
 
     bash "$PROJECT_ROOT"/scripts/add_metadata.sh
 
-    tar cvzf ../centos9stream.box ./*
+    tar cvzf ../rocky9.box ./*
 fi

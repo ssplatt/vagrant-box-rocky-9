@@ -81,8 +81,8 @@ if [[ ! -s /home/vagrant/.ssh/authorized_keys ]]; then
     chown -R vagrant:vagrant /home/vagrant/.ssh
 fi
 if [[ "$VIRTUALBOX" == "true" ]]; then
-    sudo dnf install -y virtualbox-guest-additions
-    sudo systemctl enable vboxservice
+    sudo dnf install -y virtualbox-guest-additions || true
+    sudo systemctl enable vboxservice || true
 else
     ## assume vmware
     sudo dnf install -y open-vm-tools-desktop
@@ -94,4 +94,4 @@ sudo dnf remove -y \
     kernel-devel \
     kernel-headers
 sudo dnf clean all
-sudo dnf remove -y --oldinstallonly
+sudo dnf remove -y --oldinstallonly || true

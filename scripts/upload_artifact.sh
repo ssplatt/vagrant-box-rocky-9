@@ -5,7 +5,7 @@ set -e
 
 VAGRANT_TOKEN=${VAGRANT_TOKEN:-""}
 VAGRANT_USER=${VAGRANT_USER:-"ssplatt"}
-BOX_NAME=${BOX_NAME:-"centos-stream-9"}
+BOX_NAME=${BOX_NAME:-"rocky9"}
 VERSION=${VERSION:-"0.0.1"}
 PROVIDER=${PROVIDER:-"virtualbox"}
 BOX_PATH=${BOX_PATH:-"$PROVIDER/package.box"}
