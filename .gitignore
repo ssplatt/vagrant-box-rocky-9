@@ -1,0 +1,8 @@
+*.box
+.env
+.vagrant
+.vagrant.d
+packer_cache
+virtualbox
+vmware
+vmware_desktop
