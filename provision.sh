@@ -89,6 +89,7 @@ fi
 if [[ "$VIRTUALBOX" == "true" ]]; then
     sudo dnf install -y virtualbox-guest-additions || true
     sudo systemctl enable vboxservice || true
+    sudo /sbin/rcvboxadd quicksetup all || true
 else
     ## assume vmware
     sudo dnf install -y open-vm-tools-desktop
