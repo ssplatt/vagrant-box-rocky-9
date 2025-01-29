@@ -101,3 +101,5 @@ sudo dnf remove -y \
     kernel-headers
 sudo dnf clean all
 sudo dnf remove -y --oldinstallonly || true
+
+sudo depmod -a
