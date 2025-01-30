@@ -39,6 +39,8 @@ jobs:
       - name: Upload build artifact
         env:
           VAGRANT_TOKEN: ${{ secrets.VAGRANT_TOKEN }}
+          HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
+          HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
         if: github.ref  == 'refs/heads/main'
         run: |
           export VERSION="$(date +%Y%m%d).${{github.run_number}}.${{github.run_attempt}}"

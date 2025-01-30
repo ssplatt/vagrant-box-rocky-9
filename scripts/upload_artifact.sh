@@ -3,13 +3,16 @@ set -e
 
 # https://developer.hashicorp.com/vagrant/vagrant-cloud/api/v2
 
-VAGRANT_TOKEN=${VAGRANT_TOKEN:-""}
+# VAGRANT_TOKEN=${VAGRANT_TOKEN:-""}
 VAGRANT_USER=${VAGRANT_USER:-"ssplatt"}
 BOX_NAME=${BOX_NAME:-"rocky9"}
 VERSION=${VERSION:-"0.0.1"}
 PROVIDER=${PROVIDER:-"virtualbox"}
 BOX_PATH=${BOX_PATH:-"$PROVIDER/package.box"}
 ARCHITECTURE=${ARCHITECTURE:-$(uname -m)}
+
+HCP_CLIENT_ID=${HCP_CLIENT_ID:-""}
+HCP_CLIENT_SECRET=${HCP_CLIENT_SECRET:-""}
 
 if [[ "$ARCHITECTURE" == "x86_64" ]]; then
   ARCHITECTURE="amd64"
@@ -21,6 +24,16 @@ echo "VERSION=$VERSION"
 echo "BOX_PATH=$BOX_PATH"
 echo "PROVIDER=$PROVIDER"
 echo "ARCHITECTURE=$ARCHITECTURE"
+
+# Authenticate
+API_REPONSE=$(curl -s --location "https://auth.idp.hashicorp.com/oauth2/token" \
+--header "Content-Type: application/x-www-form-urlencoded" \
+--data-urlencode "client_id=$HCP_CLIENT_ID" \
+--data-urlencode "client_secret=$HCP_CLIENT_SECRET" \
+--data-urlencode "grant_type=client_credentials" \
+--data-urlencode "audience=https://api.hashicorp.cloud")
+
+VAGRANT_TOKEN=$(echo "$API_REPONSE" | jq -r .access_token)
 
 # Create a new version
 is_version=$(curl -s "https://app.vagrantup.com/api/v2/box/${VAGRANT_USER}/${BOX_NAME}/version/${VERSION}/" | jq -r .version)
